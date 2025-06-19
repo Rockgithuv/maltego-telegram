@@ -42,20 +42,28 @@ def make_http_request(url, method="GET", params=None, retries=3, backoff_factor=
 
 
 def fetch_web_info(username):
+    """Return basic profile info scraped from ``https://t.me/<username>``.
+
+    When the request fails ``{"full_name": None, "photo": None}`` is returned.
+    """
+
     photo = None
     full_name = None
 
     response_data = make_http_request(f"https://t.me/{username}")
+    if response_data is None:
+        return {"full_name": None, "photo": None}
+
     tree = html.fromstring(response_data)
 
     images = tree.cssselect("img.tgme_page_photo_image")
     if images:
         photo = images[0].get("src")
-    
+
     title = tree.cssselect('.tgme_page_title span')
     if title:
         full_name = title[0].text_content()
-    
+
     return {"full_name": full_name, "photo": photo}
 
 
