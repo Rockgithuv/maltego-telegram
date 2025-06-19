@@ -31,7 +31,7 @@ def get_unique_forward_users(messages):
 
 
 @registry.register_transform(display_name="To Forwarded Users", input_entity="interlinked.telegram.Channel",
-                             description="This Transform receives all users mentioned by this channel",
+                             description="This Transform gathers users and authors whose messages were forwarded by this channel",
                              output_entities=["interlinked.telegram.UserProfile", "interlinked.telegram.Author"])
 class ChannelToForwardedUsers(DiscoverableTransform):
 
